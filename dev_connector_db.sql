@@ -47,35 +47,29 @@ CREATE TABLE `Profiles`(
 
 CREATE TABLE Experiences(
 	Id BINARY(16) PRIMARY KEY,
-    Profile_Id BINARY(16) NOT NULL,
 	Title VARCHAR(155) NOT NULL,
     Company VARCHAR(155) NOT NULL,
     Location VARCHAR(255) NOT NULL,
     From_Date DATE NOT NULL,
     To_Date DATE NULL,
     `Current` BOOLEAN NOT NULL DEFAULT 1,
-    `Description` VARCHAR(255) NULL,
-    FOREIGN KEY(Profile_Id) REFERENCES `Profiles`(Id)
+    `Description` VARCHAR(255) NULL
 );
 
-CREATE TABLE Education(
+CREATE TABLE Educations(
 	Id BINARY(16) PRIMARY KEY,
-    Profile_Id BINARY(16) NOT NULL,
     School VARCHAR(255) NOT NULL,
     Degree VARCHAR(200) NOT NULL,
     Field_Of_Study VARCHAR(155) NULL,
     From_Date DATE NOT NULL,
     To_Date DATE NULL,
     `Current` BOOLEAN NOT NULL DEFAULT 1,
-    `Description` VARCHAR(255) NULL,
-    FOREIGN KEY(Profile_Id) REFERENCES `Profiles`(Id)
+    `Description` VARCHAR(255) NULL
 );
 
 CREATE TABLE Social_Medias(
 	Id BINARY(16) PRIMARY KEY,
-    Profile_Id BINARY(16) NOT NULL,
-    Link VARCHAR(255) NOT NULL,
-    FOREIGN KEY(Profile_Id) REFERENCES `Profiles`(Id)
+    Link VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Skills(
@@ -89,6 +83,30 @@ CREATE TABLE Profiles_Skills(
     PRIMARY KEY(Profile_Id,Skill_Id),
 	FOREIGN KEY(Profile_Id) REFERENCES `Profiles`(Id),
 	FOREIGN KEY(Skill_Id) REFERENCES Skills(Id)
+);
+
+CREATE TABLE Profiles_Educations(
+	Profile_Id BINARY(16) NOT NULL,
+	Education_Id BINARY(16) UNIQUE NOT NULL,
+	PRIMARY KEY(Profile_Id,Education_Id),
+	FOREIGN KEY(Profile_Id) REFERENCES `Profiles`(Id),
+	FOREIGN KEY(Education_Id) REFERENCES Educations(Id)
+);
+
+CREATE TABLE Profiles_Experiences(
+	Profile_Id BINARY(16) NOT NULL,
+	Experience_Id BINARY(16) UNIQUE NOT NULL,
+	PRIMARY KEY(Profile_Id,Experience_Id),
+	FOREIGN KEY(Profile_Id) REFERENCES `Profiles`(Id),
+	FOREIGN KEY(Experience_Id) REFERENCES Experiences(Id)
+);
+
+CREATE TABLE Profiles_Social_Medias(
+	Profile_Id BINARY(16) NOT NULL,
+	Social_Media_Id BINARY(16) UNIQUE NOT NULL,
+	PRIMARY KEY(Profile_Id,Social_Media_Id),
+	FOREIGN KEY(Profile_Id) REFERENCES `Profiles`(Id),
+	FOREIGN KEY(Social_Media_Id) REFERENCES Social_Medias(Id)
 );
 
 CREATE TABLE Posts_Likes(
