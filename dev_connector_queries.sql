@@ -1,4 +1,4 @@
-USE BoilerplateDB;
+USE DevConnectorDB;
 
 -- get all users
 SELECT * FROM Users;
