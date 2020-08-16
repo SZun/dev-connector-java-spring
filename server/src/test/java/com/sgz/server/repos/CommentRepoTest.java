@@ -11,9 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -115,6 +113,19 @@ class CommentRepoTest {
         UUID expectedParam = captor.getValue();
 
         assertEquals(id, expectedParam);
+    }
+
+    @Test
+    void findAll() {
+        final List<Comment> expectedComments = Arrays.asList(expectedComment);
+
+        given(toTest.findAll()).willReturn(expectedComments);
+
+        List<Comment> fromRepo = toTest.findAll();
+
+        verify(toTest).findAll();
+
+        assertEquals(expectedComments, fromRepo);
     }
 
 }

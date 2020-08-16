@@ -8,6 +8,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -111,6 +113,19 @@ class EducationRepoTest {
         UUID expectedParam = captor.getValue();
 
         assertEquals(id, expectedParam);
+    }
+
+    @Test
+    void findAll() {
+        final List<Education> expectedEducations = Arrays.asList(expectedEducation);
+
+        given(toTest.findAll()).willReturn(expectedEducations);
+
+        List<Education> fromRepo = toTest.findAll();
+
+        verify(toTest).findAll();
+
+        assertEquals(expectedEducations, fromRepo);
     }
 
 }
