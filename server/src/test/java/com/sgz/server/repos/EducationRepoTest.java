@@ -1,9 +1,6 @@
 package com.sgz.server.repos;
 
-import com.google.common.collect.Sets;
-import com.sgz.server.entities.Comment;
-import com.sgz.server.entities.Role;
-import com.sgz.server.entities.User;
+import com.sgz.server.entities.Education;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -12,55 +9,54 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class CommentRepoTest {
+class EducationRepoTest {
 
     @Mock
-    private CommentRepo toTest;
+    private EducationRepo toTest;
 
     private final UUID id = new UUID(36, 36);
 
-    private final Set<Role> testRoles = Sets.newHashSet(Sets.newHashSet(new Role(this.id, "USER")));
+    private final Education expectedEducation = new Education(id, "Northwestern University", "Bachelors", "Computer Science", LocalDate.of(2020, 8, 15), null, true, "Studied Comp Sci at Northwestern");
 
-    private final User testUser = new User(this.id, "@amBam20", "Sam", this.testRoles);
-
-    private final Comment expectedComment = new Comment(id, this.testUser, "test comment", LocalDate.of(2020, 8, 15));
 
     @Test
     void save() {
-        given(toTest.save(any(Comment.class))).willReturn(expectedComment);
+        given(toTest.save(any(Education.class))).willReturn(expectedEducation);
 
-        ArgumentCaptor<Comment> captor = ArgumentCaptor.forClass(Comment.class);
+        ArgumentCaptor<Education> captor = ArgumentCaptor.forClass(Education.class);
 
-        Comment fromRepo = toTest.save(expectedComment);
+        Education fromRepo = toTest.save(expectedEducation);
 
         verify(toTest).save(captor.capture());
 
-        Comment expectedParam = captor.getValue();
+        Education expectedParam = captor.getValue();
         assertEquals(expectedParam.getId(), id);
-        assertEquals(expectedParam.getUser(), testUser);
-        assertEquals(expectedParam.getText(), "test comment");
-        assertEquals(expectedParam.getCommentDate(), LocalDate.of(2020, 8, 15));
+        assertEquals(expectedParam.getSchool(), "Northwestern University");
+        assertEquals(expectedParam.getDegree(), "Bachelors");
+        assertEquals(expectedParam.getFieldOfStudy(), "Computer Science");
+        assertEquals(expectedParam.getFromDate(), LocalDate.of(2020, 8, 15));
+        assertNull(expectedParam.getToDate());
+        assertTrue(expectedParam.isCurrent());
+        assertEquals(expectedParam.getDescription(), "Studied Comp Sci at Northwestern");
 
-        assertEquals(expectedComment, fromRepo);
+        assertEquals(expectedEducation, fromRepo);
     }
 
     @Test
     void findById() {
-        given(toTest.findById(any(UUID.class))).willReturn(Optional.of(expectedComment));
+        given(toTest.findById(any(UUID.class))).willReturn(Optional.of(expectedEducation));
 
         ArgumentCaptor<UUID> captor = ArgumentCaptor.forClass(UUID.class);
 
-        Optional<Comment> fromRepo = toTest.findById(id);
+        Optional<Education> fromRepo = toTest.findById(id);
 
         verify(toTest).findById(captor.capture());
 
@@ -68,7 +64,7 @@ class CommentRepoTest {
 
         assertEquals(id, expectedParam);
         assertTrue(fromRepo.isPresent());
-        assertEquals(expectedComment, fromRepo.get());
+        assertEquals(expectedEducation, fromRepo.get());
     }
 
     @Test
@@ -94,7 +90,7 @@ class CommentRepoTest {
 
         ArgumentCaptor<UUID> captor = ArgumentCaptor.forClass(UUID.class);
 
-        Optional<Comment> fromRepo = toTest.findById(id);
+        Optional<Education> fromRepo = toTest.findById(id);
 
         verify(toTest).findById(captor.capture());
 

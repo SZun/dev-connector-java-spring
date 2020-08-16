@@ -1,9 +1,6 @@
 package com.sgz.server.repos;
 
-import com.google.common.collect.Sets;
-import com.sgz.server.entities.Comment;
-import com.sgz.server.entities.Role;
-import com.sgz.server.entities.User;
+import com.sgz.server.entities.Experience;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -12,55 +9,53 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class CommentRepoTest {
+class ExperienceRepoTest {
 
     @Mock
-    private CommentRepo toTest;
+    private ExperienceRepo toTest;
 
     private final UUID id = new UUID(36, 36);
 
-    private final Set<Role> testRoles = Sets.newHashSet(Sets.newHashSet(new Role(this.id, "USER")));
-
-    private final User testUser = new User(this.id, "@amBam20", "Sam", this.testRoles);
-
-    private final Comment expectedComment = new Comment(id, this.testUser, "test comment", LocalDate.of(2020, 8, 15));
+    private final Experience expectedExperience = new Experience(id, "CEO", "Google", "California", LocalDate.of(2020,8,15), null, true, "CEO of Google");
 
     @Test
     void save() {
-        given(toTest.save(any(Comment.class))).willReturn(expectedComment);
+        given(toTest.save(any(Experience.class))).willReturn(expectedExperience);
 
-        ArgumentCaptor<Comment> captor = ArgumentCaptor.forClass(Comment.class);
+        ArgumentCaptor<Experience> captor = ArgumentCaptor.forClass(Experience.class);
 
-        Comment fromRepo = toTest.save(expectedComment);
+        Experience fromRepo = toTest.save(expectedExperience);
 
         verify(toTest).save(captor.capture());
 
-        Comment expectedParam = captor.getValue();
+        Experience expectedParam = captor.getValue();
         assertEquals(expectedParam.getId(), id);
-        assertEquals(expectedParam.getUser(), testUser);
-        assertEquals(expectedParam.getText(), "test comment");
-        assertEquals(expectedParam.getCommentDate(), LocalDate.of(2020, 8, 15));
+        assertEquals(expectedParam.getTitle(), "CEO");
+        assertEquals(expectedParam.getCompany(), "Google");
+        assertEquals(expectedParam.getLocation(), "California");
+        assertEquals(expectedParam.getFromDate(), LocalDate.of(2020, 8, 15));
+        assertNull(expectedParam.getToDate());
+        assertTrue(expectedParam.isCurrent());
+        assertEquals(expectedParam.getDescription(), "CEO of Google");
 
-        assertEquals(expectedComment, fromRepo);
+        assertEquals(expectedExperience, fromRepo);
     }
 
     @Test
     void findById() {
-        given(toTest.findById(any(UUID.class))).willReturn(Optional.of(expectedComment));
+        given(toTest.findById(any(UUID.class))).willReturn(Optional.of(expectedExperience));
 
         ArgumentCaptor<UUID> captor = ArgumentCaptor.forClass(UUID.class);
 
-        Optional<Comment> fromRepo = toTest.findById(id);
+        Optional<Experience> fromRepo = toTest.findById(id);
 
         verify(toTest).findById(captor.capture());
 
@@ -68,7 +63,7 @@ class CommentRepoTest {
 
         assertEquals(id, expectedParam);
         assertTrue(fromRepo.isPresent());
-        assertEquals(expectedComment, fromRepo.get());
+        assertEquals(expectedExperience, fromRepo.get());
     }
 
     @Test
@@ -94,7 +89,7 @@ class CommentRepoTest {
 
         ArgumentCaptor<UUID> captor = ArgumentCaptor.forClass(UUID.class);
 
-        Optional<Comment> fromRepo = toTest.findById(id);
+        Optional<Experience> fromRepo = toTest.findById(id);
 
         verify(toTest).findById(captor.capture());
 

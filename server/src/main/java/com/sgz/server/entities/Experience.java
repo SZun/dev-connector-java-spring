@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Table(name = "experiences")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Experience extends Credibility {
+public class Experience {
 
     @Id
     @GeneratedValue(generator = "hibernate-uuid")
@@ -30,4 +31,15 @@ public class Experience extends Credibility {
     @Column(nullable = false)
     private String location;
 
+    @Column(nullable = false)
+    protected LocalDate fromDate;
+
+    @Column
+    protected LocalDate toDate;
+
+    @Column(nullable = false)
+    protected boolean current;
+
+    @Column
+    protected String description;
 }
