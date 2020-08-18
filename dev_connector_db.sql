@@ -20,7 +20,6 @@ CREATE TABLE Posts(
     User_Id BINARY(16) NOT NULL,
     `Text` TEXT NOT NULL,
     Title VARCHAR(155) NOT NULL,
-    Profile_Pic_URL VARCHAR(255) NOT NULL,
     Post_Date DATE NOT NULL,
     FOREIGN KEY(User_Id) REFERENCES Users(Id)
 );
@@ -36,7 +35,7 @@ CREATE TABLE Comments(
 CREATE TABLE `Profiles`(
 	Id BINARY(16) PRIMARY KEY,
     User_Id BINARY(16) NOT NULL,
-    Handle VARCHAR(255) NOT NULL,
+    Handle VARCHAR(255) UNIQUE NOT NULL,
     Company VARCHAR(150) NULL,
     Website VARCHAR(255) NULL,
     Location VARCHAR(255) NULL,
@@ -69,7 +68,7 @@ CREATE TABLE Educations(
 
 CREATE TABLE Social_Medias(
 	Id BINARY(16) PRIMARY KEY,
-    Link VARCHAR(255) NOT NULL
+    Link VARCHAR(255) UNIQUE NOT NULL
 );
 
 CREATE TABLE Skills(
