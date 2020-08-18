@@ -35,9 +35,6 @@ public class Post {
     private String title;
 
     @Column(nullable = false)
-    private String profilePicURL;
-
-    @Column(nullable = false)
     private LocalDate postDate;
 
     @ManyToMany

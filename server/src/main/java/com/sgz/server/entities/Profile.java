@@ -30,16 +30,16 @@ public class Profile {
     @Column(nullable = false)
     private String handle;
 
-    @Column(nullable = false)
+    @Column
     private String company;
 
-    @Column(nullable = false)
+    @Column
     private String website;
 
-    @Column(nullable = false)
+    @Column
     private String location;
 
-    @Column(nullable = false)
+    @Column
     private String description;
 
     @Column(nullable = false)
