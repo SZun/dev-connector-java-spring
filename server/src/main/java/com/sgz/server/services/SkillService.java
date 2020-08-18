@@ -36,7 +36,7 @@ public class SkillService {
     public Skill getSkillById(UUID id) throws InvalidIdException {
         Optional<Skill> toGet = skillRepo.findById(id);
 
-        if(!toGet.isPresent()){
+        if(toGet.isEmpty()){
             throw new InvalidIdException("Invalid Id");
         }
 
@@ -50,7 +50,7 @@ public class SkillService {
 
         Optional<Skill> toGet = skillRepo.findByName(name);
 
-        if(!toGet.isPresent()){
+        if(toGet.isEmpty()){
             throw new InvalidNameException("Invalid Name");
         }
 

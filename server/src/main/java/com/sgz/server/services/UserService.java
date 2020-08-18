@@ -54,7 +54,7 @@ public class UserService {
         }
 
         Optional<User> toGet = userRepo.findByUsername(username);
-        if (!toGet.isPresent()) {
+        if (toGet.isEmpty()) {
             throw new InvalidNameException("Name not found");
         }
 
@@ -74,7 +74,7 @@ public class UserService {
     public User getUserById(UUID id) throws InvalidIdException {
         Optional<User> toGet = userRepo.findById(id);
 
-        if (!toGet.isPresent()) {
+        if (toGet.isEmpty()) {
             throw new InvalidIdException("Invalid Id");
         }
 

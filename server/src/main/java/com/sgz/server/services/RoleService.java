@@ -34,7 +34,7 @@ public class RoleService {
     public Role getRoleById(UUID id) throws InvalidIdException {
         Optional<Role> toGet = roleRepo.findById(id);
 
-        if (!toGet.isPresent()) throw new InvalidIdException("Invalid Id");
+        if (toGet.isEmpty()) throw new InvalidIdException("Invalid Id");
 
         return toGet.get();
     }
@@ -48,7 +48,7 @@ public class RoleService {
 
         Optional<Role> toGet = roleRepo.findByAuthority(authority);
 
-        if (!toGet.isPresent()) throw new InvalidAuthorityException("Authority not found");
+        if (toGet.isEmpty()) throw new InvalidAuthorityException("Authority not found");
 
         return toGet.get();
     }
