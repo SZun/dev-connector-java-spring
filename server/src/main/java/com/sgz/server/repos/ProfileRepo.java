@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface ProfileRepo extends JpaRepository<Profile, UUID> {
 
-    Optional<Profile> getByHandle(String handle);
+    Optional<Profile> findByHandle(String handle);
 
     boolean existsByHandle(String handle);
 
