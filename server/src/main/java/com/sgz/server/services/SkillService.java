@@ -44,7 +44,8 @@ public class SkillService {
     }
 
     public Skill getSkillByName(String name) throws InvalidEntityException, InvalidNameException {
-        if(name.trim().length() == 0 || name.trim().length() > 50){
+        if(name == null || name.trim().length() == 0
+                || name.trim().length() > 50){
             throw new InvalidEntityException("Invalid Entity");
         }
 

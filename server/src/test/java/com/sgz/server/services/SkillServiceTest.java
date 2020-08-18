@@ -81,6 +81,11 @@ class SkillServiceTest {
     }
 
     @Test
+    void getSkillByNameNullName() {
+        assertThrows(InvalidEntityException.class, () -> toTest.getSkillByName(null));
+    }
+
+    @Test
     void getSkillByNameBlankName() {
         assertThrows(InvalidEntityException.class, () -> toTest.getSkillByName("  "));
     }
