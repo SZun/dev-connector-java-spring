@@ -1,26 +1,27 @@
 package com.sgz.server.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
 @Entity
 @Table(name = "educations")
-@AllArgsConstructor
-@NoArgsConstructor
-public class Education {
+public class Education extends Credential {
 
-    @Id
-    @GeneratedValue(generator = "hibernate-uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    public Education() {
+    }
+
+    public Education(UUID id, LocalDate fromDate, LocalDate toDate, boolean current, String description, String school, String degree, String fieldOfStudy) {
+        super(id, fromDate, toDate, current, description);
+        this.school = school;
+        this.degree = degree;
+        this.fieldOfStudy = fieldOfStudy;
+    }
 
     @Column(nullable = false)
     private String school;
@@ -30,17 +31,5 @@ public class Education {
 
     @Column
     private String fieldOfStudy;
-
-    @Column(nullable = false)
-    protected LocalDate fromDate;
-
-    @Column
-    protected LocalDate toDate;
-
-    @Column(nullable = false)
-    protected boolean current;
-
-    @Column
-    protected String description;
 
 }

@@ -33,9 +33,9 @@ class ProfileRepoTest {
 
     private final SocialMedia testSocialMedia = new SocialMedia(this.id, "https://www.facebook.com/zuck");
 
-    private final Experience testExperience = new Experience(id, "CEO", "Google", "California", LocalDate.of(2020, 8, 15), null, true, "CEO of Google");
+    private final Experience testExperience = new Experience(id, LocalDate.of(2020, 8, 15), null, true, "CEO of Google", "CEO", "Google", "California");
 
-    private final Education testEducation = new Education(id, "Northwestern University", "Bachelors", "Computer Science", LocalDate.of(2020, 8, 15), null, true, "Studied Comp Sci at Northwestern");
+    private final Education testEducation = new Education(id, LocalDate.of(2020, 8, 15), null, true, "Studied Comp Sci at Northwestern", "Northwestern University", "Bachelors", "Computer Science");
 
     private final Profile expectedProfile = new Profile(id, this.testUser, "Zun", "Apple", null, null, null, "SZun", Sets.newHashSet(this.testSkill), Sets.newHashSet(this.testEducation), Sets.newHashSet(this.testExperience), Sets.newHashSet(this.testSocialMedia));
 

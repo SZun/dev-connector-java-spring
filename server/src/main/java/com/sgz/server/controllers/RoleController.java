@@ -26,19 +26,19 @@ public class RoleController {
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Role>> getAllRoles() throws NoItemsException {
-        return ResponseEntity.ok(roleService.getAllRoles());
+        return ResponseEntity.ok(roleService.getAllItems());
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Role> getRoleById(@PathVariable UUID id) throws InvalidIdException {
-        return ResponseEntity.ok(roleService.getRoleById(id));
+        return ResponseEntity.ok(roleService.getItemById(id));
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Role> createRole(@Valid @RequestBody Role toAdd) throws InvalidEntityException, InvalidAuthorityException {
-        return new ResponseEntity(roleService.createRole(toAdd), HttpStatus.CREATED);
+        return new ResponseEntity(roleService.createItem(toAdd), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -53,13 +53,13 @@ public class RoleController {
         }
 
         toEdit.setId(id);
-        return ResponseEntity.ok(roleService.editRole(toEdit));
+        return ResponseEntity.ok(roleService.editItem(toEdit));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UUID> deleteRoleById(@PathVariable UUID id) throws InvalidIdException {
-        roleService.deleteRoleById(id);
+        roleService.deleteItemById(id);
         return ResponseEntity.ok(id);
     }
 

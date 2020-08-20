@@ -76,7 +76,7 @@ class RoleControllerTest {
     void getAllRoles() throws Exception {
         final String expected = "[{\"id\":\"00000000-0000-0024-0000-000000000024\",\"authority\":\"USER\"},{\"id\":\"00000000-0000-0024-0000-000000000024\",\"authority\":\"ADMIN\"},{\"id\":\"00000000-0000-0024-0000-000000000024\",\"authority\":\"GUEST\"}]";
 
-        when(roleService.getAllRoles()).thenReturn(
+        when(roleService.getAllItems()).thenReturn(
                 Arrays.asList(expectedRole, new Role(id, "ADMIN"), new Role(id, "GUEST")
                 ));
 
@@ -115,8 +115,8 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void getRoleById() throws Exception {
-        when(roleService.getRoleById(any(UUID.class))).thenReturn(expectedRole);
+    void getItemById() throws Exception {
+        when(roleService.getItemById(any(UUID.class))).thenReturn(expectedRole);
 
         MvcResult mvcResult = mockMvc.perform(get(baseURL + "/" + testUUIDStr))
                 .andExpect(status().isOk()).andReturn();
@@ -128,7 +128,7 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void getRoleByIdInvalidId() throws Exception {
+    void getItemByIdInvalidId() throws Exception {
         final String expectedMsg = "\"message\":\"Invalid Id\",";
         final String expectedName = "\"name\":\"InvalidIdException\",";
         final String expectedErrors = "\"errors\":null,\"timestamp\"";
@@ -146,15 +146,15 @@ class RoleControllerTest {
     }
 
     @Test
-    void getRoleByIdForbidden() throws Exception {
+    void getItemByIdForbidden() throws Exception {
         mockMvc.perform(get(baseURL + "/" + testUUIDStr))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void createRole() throws Exception {
-        when(roleService.createRole(any(Role.class))).thenReturn(expectedRole);
+    void createItem() throws Exception {
+        when(roleService.createItem(any(Role.class))).thenReturn(expectedRole);
 
         MvcResult mvcResult = mockMvc.perform(
                 post(baseURL)
@@ -169,10 +169,10 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void createRoleBindingResultException() throws Exception {
+    void createItemBindingResultException() throws Exception {
         final String expected = "{\"message\":\"Fields are invalid\",\"name\":\"InvalidRequestBodyException\"";
 
-        when(roleService.createRole(any(Role.class))).thenReturn(expectedRole);
+        when(roleService.createItem(any(Role.class))).thenReturn(expectedRole);
 
         MvcResult mvcResult = mockMvc.perform(
                 post(baseURL)
@@ -188,12 +188,12 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void createRoleInvalidEntity() throws Exception {
+    void createItemInvalidEntity() throws Exception {
         final String expectedMsg = "\"message\":\"Fields entered are invalid\",";
         final String expectedName = "\"name\":\"InvalidEntityException\",";
         final String expectedErrors = "\"errors\":null,\"timestamp\"";
 
-        when(roleService.createRole(any(Role.class))).thenThrow(new InvalidEntityException("Invalid Entity"));
+        when(roleService.createItem(any(Role.class))).thenThrow(new InvalidEntityException("Invalid Entity"));
 
         MvcResult mvcResult = mockMvc.perform(
                 post(baseURL)
@@ -210,12 +210,12 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void createRoleInvalidAuthority() throws Exception {
+    void createItemInvalidAuthority() throws Exception {
         final String expectedMsg = "\"message\":\"Authority entered is invalid\",";
         final String expectedName = "\"name\":\"InvalidAuthorityException\",";
         final String expectedErrors = "\"errors\":null,\"timestamp\"";
 
-        when(roleService.createRole(any(Role.class))).thenThrow(new InvalidAuthorityException("Invalid Authority"));
+        when(roleService.createItem(any(Role.class))).thenThrow(new InvalidAuthorityException("Invalid Authority"));
 
         MvcResult mvcResult = mockMvc.perform(
                 post(baseURL)
@@ -231,7 +231,7 @@ class RoleControllerTest {
     }
 
     @Test
-    void createRoleForbidden() throws Exception {
+    void createItemForbidden() throws Exception {
         mockMvc.perform(
                 post(baseURL)
                         .content(objectMapper.writeValueAsString(testRole))
@@ -241,8 +241,8 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void editRole() throws Exception {
-        when(roleService.editRole(any(Role.class))).thenReturn(expectedRole);
+    void editItem() throws Exception {
+        when(roleService.editItem(any(Role.class))).thenReturn(expectedRole);
         when(roleService.getRoleByAuthority(anyString())).thenReturn(expectedRole);
 
         MvcResult mvcResult = mockMvc.perform(
@@ -258,8 +258,8 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void editRoleMismatchedIds() throws Exception {
-        when(roleService.editRole(any(Role.class))).thenReturn(expectedRole);
+    void editItemMismatchedIds() throws Exception {
+        when(roleService.editItem(any(Role.class))).thenReturn(expectedRole);
         when(roleService.getRoleByAuthority(anyString())).thenReturn(expectedRole);
 
         final Role toEdit = new Role(UUID.randomUUID(), "USER");
@@ -273,10 +273,10 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void editRoleBindingResultException() throws Exception {
+    void editItemBindingResultException() throws Exception {
         final String expected = "{\"message\":\"Fields are invalid\",\"name\":\"InvalidRequestBodyException\"";
 
-        when(roleService.editRole(any(Role.class))).thenReturn(expectedRole);
+        when(roleService.editItem(any(Role.class))).thenReturn(expectedRole);
         when(roleService.getRoleByAuthority(anyString())).thenReturn(expectedRole);
 
         MvcResult mvcResult = mockMvc.perform(
@@ -292,12 +292,12 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void editRoleInvalidId() throws Exception {
+    void editItemInvalidId() throws Exception {
         final String expectedMsg = "\"message\":\"Invalid Id\",";
         final String expectedName = "\"name\":\"InvalidIdException\",";
         final String expectedErrors = "\"errors\":null,\"timestamp\"";
 
-        when(roleService.editRole(any(Role.class))).thenThrow(new InvalidIdException("Invalid Id"));
+        when(roleService.editItem(any(Role.class))).thenThrow(new InvalidIdException("Invalid Id"));
         when(roleService.getRoleByAuthority(anyString())).thenReturn(expectedRole);
 
         MvcResult mvcResult = mockMvc.perform(
@@ -315,12 +315,12 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void editRoleInvalidEntity() throws Exception {
+    void editItemInvalidEntity() throws Exception {
         final String expectedMsg = "\"message\":\"Fields entered are invalid\",";
         final String expectedName = "\"name\":\"InvalidEntityException\",";
         final String expectedErrors = "\"errors\":null,\"timestamp\"";
 
-        when(roleService.editRole(any(Role.class))).thenThrow(new InvalidEntityException("Invalid Entity"));
+        when(roleService.editItem(any(Role.class))).thenThrow(new InvalidEntityException("Invalid Entity"));
         when(roleService.getRoleByAuthority(anyString())).thenReturn(expectedRole);
 
         MvcResult mvcResult = mockMvc.perform(
@@ -337,7 +337,7 @@ class RoleControllerTest {
     }
 
     @Test
-    void editRoleForbidden() throws Exception {
+    void editItemForbidden() throws Exception {
         mockMvc.perform(
                 put(baseURL + "/" + testUUIDStr)
                         .content(objectMapper.writeValueAsString(testRole))

@@ -30,10 +30,10 @@ public class AdminController {
     @PutMapping("/users/{id}/roles")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<User> editUserRoles(@PathVariable UUID id, @RequestBody Set<UUID> roleIds) throws InvalidIdException, InvalidEntityException {
-        User toEdit = userService.getUserById(id);
+        User toEdit = userService.getItemById(id);
         Set<Role> roles = new HashSet<>();
         for (UUID roleId : roleIds) {
-            roles.add(roleService.getRoleById(roleId));
+            roles.add(roleService.getItemById(roleId));
         }
         toEdit.setRoles(roles);
         return ResponseEntity.ok(adminService.updateUserRoles(toEdit));

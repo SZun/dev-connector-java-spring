@@ -194,10 +194,10 @@ class UserControllerTest {
 
     @Test
     @WithMockUser
-    void getAllUsers() throws Exception {
+    void getAllItems() throws Exception {
         final String expected = "[{\"id\":\"00000000-0000-0024-0000-000000000024\",\"username\":\"Sam\"}]";
 
-        when(userService.getAllUsers()).thenReturn(Arrays.asList(expectedUser));
+        when(userService.getAllItems()).thenReturn(Arrays.asList(expectedUser));
 
         MvcResult mvcResult = mockMvc.perform(get(baseURL))
                 .andExpect(status().isOk()).andReturn();
@@ -208,7 +208,7 @@ class UserControllerTest {
 
     @Test
     @WithMockUser
-    void getAllUsersNoItems() throws Exception {
+    void getAllItemsNoItems() throws Exception {
         final String expectedMsg = "\"message\":\"No Items\",";
         final String expectedName = "\"name\":\"NoItemsException\",";
         final String expectedErrors = "\"errors\":null,\"timestamp\"";
@@ -226,10 +226,10 @@ class UserControllerTest {
 
     @Test
     @WithMockUser
-    void getUserById() throws Exception {
+    void getItemById() throws Exception {
         final String expected = "{\"id\":\"00000000-0000-0024-0000-000000000024\",\"username\":\"Sam\"}";
 
-        when(userService.getUserById(any(UUID.class))).thenReturn(expectedUser);
+        when(userService.getItemById(any(UUID.class))).thenReturn(expectedUser);
 
         MvcResult mvcResult = mockMvc.perform(get(baseURL + "/" + testUUIDStr))
                 .andExpect(status().isOk()).andReturn();
@@ -240,12 +240,12 @@ class UserControllerTest {
 
     @Test
     @WithMockUser
-    void getUserByIdInvalidId() throws Exception {
+    void getItemByIdInvalidId() throws Exception {
         final String expectedMsg = "\"message\":\"Invalid Id\",";
         final String expectedName = "\"name\":\"InvalidIdException\",";
         final String expectedErrors = "\"errors\":null,\"timestamp\"";
 
-        when(userService.getUserById(any(UUID.class))).thenThrow(new InvalidIdException("Invalid Id"));
+        when(userService.getItemById(any(UUID.class))).thenThrow(new InvalidIdException("Invalid Id"));
 
         MvcResult mvcResult = mockMvc.perform(get(baseURL + "/" + testUUIDStr))
                 .andExpect(status().isUnprocessableEntity()).andReturn();
@@ -431,13 +431,13 @@ class UserControllerTest {
     }
 
     @Test
-    void getAllUsersForbidden() throws Exception {
+    void getAllItemsForbidden() throws Exception {
         mockMvc.perform(get(baseURL))
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    void getUserByIdForbidden() throws Exception {
+    void getItemByIdForbidden() throws Exception {
         mockMvc.perform(get(baseURL + "/" + testUUIDStr))
                 .andExpect(status().isForbidden());
     }

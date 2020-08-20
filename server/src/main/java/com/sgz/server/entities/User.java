@@ -1,7 +1,7 @@
 package com.sgz.server.entities;
 
-import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.Data;
+import lombok.NonNull;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,16 +14,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "users")
-@AllArgsConstructor
-@NoArgsConstructor
-@RequiredArgsConstructor
-public class User {
-
-    @Id
-    @GeneratedValue(generator = "hibernate-uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+public class User extends BaseEntity {
 
     @NotBlank(message = "Password can not be blank")
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$", message = "Password must follow rules")
@@ -44,16 +35,28 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private Set<Role> roles = new HashSet<>();
 
+    public User(){
+        super();
+    }
+
     public User(UUID id, String password, String username) {
-        this.id = id;
+        super(id);
         this.password = password;
         this.username = username;
     }
 
     public User(String password, String username, Set<Role> roles) {
+        super();
         this.password = password;
         this.username = username;
         this.roles = roles;
     }
-}
 
+    public User(UUID id, String password, String username, Set<Role> roles) {
+        super(id);
+        this.password = password;
+        this.username = username;
+        this.roles = roles;
+    }
+
+}

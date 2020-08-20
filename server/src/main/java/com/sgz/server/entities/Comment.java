@@ -1,9 +1,6 @@
 package com.sgz.server.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,15 +9,17 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "comments")
-@AllArgsConstructor
-@RequiredArgsConstructor
-public class Comment {
+public class Comment extends BaseEntity {
 
-    @Id
-    @GeneratedValue(generator = "hibernate-uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    public Comment() {
+    }
+
+    public Comment(UUID id, User user, String text, LocalDate commentDate) {
+        super(id);
+        this.user = user;
+        this.text = text;
+        this.commentDate = commentDate;
+    }
 
     @ManyToOne
     @JoinColumn(name = "user_id")

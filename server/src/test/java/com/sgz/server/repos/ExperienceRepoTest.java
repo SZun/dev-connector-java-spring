@@ -26,7 +26,7 @@ class ExperienceRepoTest {
 
     private final UUID id = new UUID(36, 36);
 
-    private final Experience expectedExperience = new Experience(id, "CEO", "Google", "California", LocalDate.of(2020,8,15), null, true, "CEO of Google");
+    private final Experience expectedExperience = new Experience(id, LocalDate.of(2020,8,15), null, true, "CEO of Google", "CEO", "Google", "California");
 
     @Test
     void save() {

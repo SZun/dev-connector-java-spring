@@ -26,7 +26,7 @@ class EducationRepoTest {
 
     private final UUID id = new UUID(36, 36);
 
-    private final Education expectedEducation = new Education(id, "Northwestern University", "Bachelors", "Computer Science", LocalDate.of(2020, 8, 15), null, true, "Studied Comp Sci at Northwestern");
+    private final Education expectedEducation = new Education(id, LocalDate.of(2020, 8, 15), null, true, "Studied Comp Sci at Northwestern", "Northwestern University", "Bachelors", "Computer Science");
 
 
     @Test

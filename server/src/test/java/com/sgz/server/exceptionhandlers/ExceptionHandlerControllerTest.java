@@ -74,7 +74,7 @@ class ExceptionHandlerControllerTest {
         final String expectedName = "\"name\":\"NumberFormatException\",";
         final String expectedErrors = "\"errors\":null,\"timestamp\"";
 
-        when(userService.getUserById(any(UUID.class))).thenThrow(new NumberFormatException("Number format exception"));
+        when(userService.getItemById(any(UUID.class))).thenThrow(new NumberFormatException("Number format exception"));
 
         MvcResult mvcResult = mockMvc.perform(get(baseURL + "/" + testUUIDStr))
                 .andExpect(status().isBadRequest()).andReturn();
@@ -92,7 +92,7 @@ class ExceptionHandlerControllerTest {
         final String expectedName = "\"name\":\"IllegalArgumentException\",";
         final String expectedErrors = "\"errors\":null,\"timestamp\"";
 
-        when(userService.getUserById(any(UUID.class))).thenThrow(new IllegalArgumentException("Illegal Argument"));
+        when(userService.getItemById(any(UUID.class))).thenThrow(new IllegalArgumentException("Illegal Argument"));
 
         MvcResult mvcResult = mockMvc.perform(get(baseURL + "/" + testUUIDStr))
                 .andExpect(status().isBadRequest()).andReturn();

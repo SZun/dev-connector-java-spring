@@ -3,7 +3,6 @@ package com.sgz.server.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -13,15 +12,25 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "profiles")
-@AllArgsConstructor
-@NoArgsConstructor
-public class Profile {
+public class Profile extends BaseEntity {
 
-    @Id
-    @GeneratedValue(generator = "hibernate-uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    public Profile() {
+    }
+
+    public Profile(UUID id, User user, String handle, String company, String website, String location, String description, String githubUsername, Set<Skill> skills, Set<Education> educations, Set<Experience> experiences, Set<SocialMedia> socialMedias) {
+        super(id);
+        this.user = user;
+        this.handle = handle;
+        this.company = company;
+        this.website = website;
+        this.location = location;
+        this.description = description;
+        this.githubUsername = githubUsername;
+        this.skills = skills;
+        this.educations = educations;
+        this.experiences = experiences;
+        this.socialMedias = socialMedias;
+    }
 
     @ManyToOne
     @JoinColumn(name = "user_id")

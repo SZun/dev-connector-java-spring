@@ -46,7 +46,7 @@ public class UserController {
     public ResponseEntity<List<UserVM>> getAllUsers() throws NoItemsException {
         List<UserVM> toReturn = new ArrayList<>();
 
-        userService.getAllUsers().forEach(u -> toReturn.add(new UserVM(u)));
+        userService.getAllItems().forEach(u -> toReturn.add(new UserVM(u)));
 
         return ResponseEntity.ok(toReturn);
     }
@@ -54,7 +54,7 @@ public class UserController {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<UserVM> getUserById(@PathVariable UUID id) throws InvalidIdException {
-        UserVM toReturn = new UserVM(userService.getUserById(id));
+        UserVM toReturn = new UserVM(userService.getItemById(id));
 
         return ResponseEntity.ok(toReturn);
     }

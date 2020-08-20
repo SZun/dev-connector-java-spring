@@ -84,8 +84,8 @@ class AdminControllerTest {
     void editUserRoles() throws Exception {
         final String expected = "{\"id\":\"00000000-0000-0024-0000-000000000024\",\"password\":\"@amBam20\",\"username\":\"Sam\",\"roles\":[{\"id\":\"00000000-0000-0024-0000-000000000024\",\"authority\":\"USER\"}]}";
 
-        when(userService.getUserById(any(UUID.class))).thenReturn(expectedUser);
-        when(roleService.getRoleById(any(UUID.class))).thenReturn(expectedRole);
+        when(userService.getItemById(any(UUID.class))).thenReturn(expectedUser);
+        when(roleService.getItemById(any(UUID.class))).thenReturn(expectedRole);
         when(adminService.updateUserRoles(any(User.class))).thenReturn(expectedUser);
 
         MvcResult mvcResult = mockMvc.perform(
@@ -106,7 +106,7 @@ class AdminControllerTest {
         final String expectedName = "\"name\":\"InvalidIdException\",";
         final String expectedErrors = "\"errors\":null,\"timestamp\"";
 
-        when(userService.getUserById(any(UUID.class))).thenThrow(new InvalidIdException("Invalid Id"));
+        when(userService.getItemById(any(UUID.class))).thenThrow(new InvalidIdException("Invalid Id"));
 
         MvcResult mvcResult = mockMvc.perform(
                 put(baseURL + "/users/" + testUUIDStr + "/roles")
@@ -128,8 +128,8 @@ class AdminControllerTest {
         final String expectedName = "\"name\":\"InvalidEntityException\",";
         final String expectedErrors = "\"errors\":null,\"timestamp\"";
 
-        when(userService.getUserById(any(UUID.class))).thenReturn(expectedUser);
-        when(roleService.getRoleById(any(UUID.class))).thenReturn(expectedRole);
+        when(userService.getItemById(any(UUID.class))).thenReturn(expectedUser);
+        when(roleService.getItemById(any(UUID.class))).thenReturn(expectedRole);
         when(adminService.updateUserRoles(any(User.class))).thenThrow(new InvalidEntityException("Invalid Entity"));
 
         MvcResult mvcResult = mockMvc.perform(

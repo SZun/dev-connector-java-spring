@@ -1,9 +1,11 @@
 package com.sgz.server.entities;
 
-import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.Data;
+import lombok.NonNull;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.UUID;
@@ -11,16 +13,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "roles")
-@AllArgsConstructor
-@NoArgsConstructor
-@RequiredArgsConstructor
-public class Role {
-
-    @Id
-    @GeneratedValue(generator = "hibernate-uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+public class Role extends BaseEntity {
 
     @NotBlank(message = "Please enter a role")
     @Size(max = 50, message = "Role title cannot be more than 50 characters")
@@ -28,4 +21,17 @@ public class Role {
     @Column(unique = true, nullable = false)
     private String authority;
 
+    public Role() {
+        super();
+    }
+
+    public Role(String authority) {
+        super();
+        this.authority = authority;
+    }
+
+    public Role(UUID id, String authority) {
+        super(id);
+        this.authority = authority;
+    }
 }

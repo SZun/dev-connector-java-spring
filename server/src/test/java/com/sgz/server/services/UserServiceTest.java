@@ -125,13 +125,13 @@ class UserServiceTest {
     }
 
     @Test
-    void getAllUsers() throws NoItemsException {
+    void getAllItems() throws NoItemsException {
         final User expected2 = new User(id, "@amBam22", "Sam2", testRoles);
         final User expected3 = new User(id, "@amBam23", "Sam3", testRoles);
 
         when(userRepo.findAll()).thenReturn(Arrays.asList(expectedUser, expected2, expected3));
 
-        List<User> fromService = toTest.getAllUsers();
+        List<User> fromService = toTest.getAllItems();
 
         assertEquals(3, fromService.size());
         assertTrue(fromService.contains(expectedUser));
@@ -140,8 +140,8 @@ class UserServiceTest {
     }
 
     @Test
-    void getAllUsersNoItems() {
-        assertThrows(NoItemsException.class, () -> toTest.getAllUsers());
+    void getAllItemsNoItems() {
+        assertThrows(NoItemsException.class, () -> toTest.getAllItems());
     }
 
     @Test
@@ -263,17 +263,17 @@ class UserServiceTest {
     }
 
     @Test
-    void getUserById() throws InvalidIdException {
+    void getItemById() throws InvalidIdException {
         when(userRepo.findById(any(UUID.class))).thenReturn(Optional.of(expectedUser));
 
-        User fromService = toTest.getUserById(id);
+        User fromService = toTest.getItemById(id);
 
         assertEquals(expectedUser, fromService);
     }
 
     @Test
-    void getUserByIdInvalidId() {
-        assertThrows(InvalidIdException.class, () -> toTest.getUserById(id));
+    void getItemByIdInvalidId() {
+        assertThrows(InvalidIdException.class, () -> toTest.getItemById(id));
     }
 
     @Test

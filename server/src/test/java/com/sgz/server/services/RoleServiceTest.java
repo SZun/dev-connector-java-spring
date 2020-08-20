@@ -40,13 +40,13 @@ class RoleServiceTest {
     private final String testLongString = "1ZvBWFVdBu62e6yT87rdELXaLP6KfY2wJ9ZRpw9KmZqzNFICvlNKgkCU28aKRpQb2I85EqAxr6Xb4A1Ct4yNEjTOAXgNyyIBEyTnjOYyN4piLPot1OYtnNftyVXZg6DSxlAGgYzBa5ATYzkSHo2EmIpNyc0NCXvFtPdwP1N30s1Fn63sBaQGdX8sZffYO29yTVtg4LLYRdrrP8aPmL2Pm3c3XySoA7KLLNIi8417yXnjzgdDQErkKiAuoR5REsdL";
 
     @Test
-    void getAllRoles() throws NoItemsException {
+    void getAllItems() throws NoItemsException {
         final Role expected2 = new Role(id, "ADMIN");
         final Role expected3 = new Role(id, "GUEST");
 
         when(roleRepo.findAll()).thenReturn(Arrays.asList(expectedRole, expected2, expected3));
 
-        List<Role> fromService = toTest.getAllRoles();
+        List<Role> fromService = toTest.getAllItems();
 
         assertEquals(3, fromService.size());
         assertTrue(fromService.contains(expectedRole));
@@ -55,22 +55,22 @@ class RoleServiceTest {
     }
 
     @Test
-    void getAllRolesNoItems() {
-        assertThrows(NoItemsException.class, () -> toTest.getAllRoles());
+    void getAllItemsNoItems() {
+        assertThrows(NoItemsException.class, () -> toTest.getAllItems());
     }
 
     @Test
-    void getRoleById() throws InvalidIdException {
+    void getItemById() throws InvalidIdException {
         when(roleRepo.findById(any(UUID.class))).thenReturn(Optional.of(expectedRole));
 
-        Role fromService = toTest.getRoleById(id);
+        Role fromService = toTest.getItemById(id);
 
         assertEquals(expectedRole, fromService);
     }
 
     @Test
-    void getRoleByIdInvalidId() {
-        assertThrows(InvalidIdException.class, () -> toTest.getRoleById(id));
+    void getItemByIdInvalidId() {
+        assertThrows(InvalidIdException.class, () -> toTest.getItemById(id));
     }
 
     @Test
@@ -108,95 +108,95 @@ class RoleServiceTest {
     }
 
     @Test
-    void createRole() throws InvalidEntityException, InvalidAuthorityException {
+    void createItem() throws InvalidEntityException, InvalidAuthorityException {
         final Role toCreate = new Role("USER");
 
         when(roleRepo.save(any())).thenReturn(testRole);
 
-        Role fromService = toTest.createRole(toCreate);
+        Role fromService = toTest.createItem(toCreate);
 
         assertEquals(testRole, fromService);
     }
 
     @Test
-    void createRoleNullRole() {
-        assertThrows(InvalidEntityException.class, () -> toTest.createRole(null));
+    void createItemNullRole() {
+        assertThrows(InvalidEntityException.class, () -> toTest.createItem(null));
     }
 
     @Test
-    void createRoleEmptyAuthority() {
+    void createItemEmptyAuthority() {
         final Role toCreate = new Role("");
-        assertThrows(InvalidEntityException.class, () -> toTest.createRole(toCreate));
+        assertThrows(InvalidEntityException.class, () -> toTest.createItem(toCreate));
     }
 
     @Test
-    void createRoleBlankAuthority() {
+    void createItemBlankAuthority() {
         final Role toCreate = new Role("  ");
-        assertThrows(InvalidEntityException.class, () -> toTest.createRole(toCreate));
+        assertThrows(InvalidEntityException.class, () -> toTest.createItem(toCreate));
     }
 
     @Test
-    void createRoleTooLongAuthority() {
+    void createItemTooLongAuthority() {
         final Role toCreate = new Role(testLongString);
-        assertThrows(InvalidEntityException.class, () -> toTest.createRole(toCreate));
+        assertThrows(InvalidEntityException.class, () -> toTest.createItem(toCreate));
     }
 
     @Test
-    void createRoleInvalidAuthority() throws InvalidEntityException {
+    void createItemInvalidAuthority() throws InvalidEntityException {
         final Role toCreate = new Role("USER");
 
         when(roleRepo.existsByAuthority(anyString())).thenReturn(true);
 
-        assertThrows(InvalidAuthorityException.class, () -> toTest.createRole(toCreate));
+        assertThrows(InvalidAuthorityException.class, () -> toTest.createItem(toCreate));
     }
 
     @Test
-    void editRole() throws InvalidEntityException, InvalidIdException {
+    void editItem() throws InvalidEntityException, InvalidIdException {
         when(roleRepo.existsById(any(UUID.class))).thenReturn(true);
         when(roleRepo.save(testRole)).thenReturn(testRole);
 
-        Role fromService = toTest.editRole(testRole);
+        Role fromService = toTest.editItem(testRole);
 
         assertEquals(testRole, fromService);
     }
 
     @Test
-    void editRoleNullRole() {
-        assertThrows(InvalidEntityException.class, () -> toTest.editRole(null));
+    void editItemNullRole() {
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(null));
     }
 
     @Test
-    void editRoleEmptyAuthority() {
+    void editItemEmptyAuthority() {
         final Role toEdit = new Role(id, "");
-        assertThrows(InvalidEntityException.class, () -> toTest.editRole(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void editRoleBlankAuthority() {
+    void editItemBlankAuthority() {
         final Role toEdit = new Role(id, "  ");
-        assertThrows(InvalidEntityException.class, () -> toTest.editRole(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void editRoleTooLongAuthority() {
+    void editItemTooLongAuthority() {
         final Role toEdit = new Role(id, testLongString);
-        assertThrows(InvalidEntityException.class, () -> toTest.editRole(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void editRoleInvalidId() {
+    void editItemInvalidId() {
         final Role toEdit = new Role(id, "USER");
-        assertThrows(InvalidIdException.class, () -> toTest.editRole(toEdit));
+        assertThrows(InvalidIdException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void deleteRoleById() throws InvalidIdException {
+    void deleteItemById() throws InvalidIdException {
         when(roleRepo.existsById(any(UUID.class))).thenReturn(true);
-        toTest.deleteRoleById(id);
+        toTest.deleteItemById(id);
     }
 
     @Test
-    void deleteRoleByIdInvalidId() {
-        assertThrows(InvalidIdException.class, () -> toTest.deleteRoleById(id));
+    void deleteItemByIdInvalidId() {
+        assertThrows(InvalidIdException.class, () -> toTest.deleteItemById(id));
     }
 }

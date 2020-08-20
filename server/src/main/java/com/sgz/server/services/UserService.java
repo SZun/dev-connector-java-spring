@@ -1,49 +1,42 @@
 package com.sgz.server.services;
 
 import com.sgz.server.entities.User;
+import com.sgz.server.exceptions.InvalidAuthorityException;
 import com.sgz.server.exceptions.InvalidEntityException;
 import com.sgz.server.exceptions.InvalidIdException;
 import com.sgz.server.exceptions.InvalidNameException;
-import com.sgz.server.exceptions.NoItemsException;
 import com.sgz.server.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserService {
+public class UserService extends BaseService<User, UserRepo> {
 
-    private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
+    public UserService(UserRepo repo, PasswordEncoder passwordEncoder) {
+        super(repo);
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Override
+    public User createItem(User toAdd) throws InvalidEntityException, InvalidAuthorityException {
+        throw new UnsupportedOperationException("Unsupported");
+    }
+
     public User createUser(User toAdd) throws InvalidEntityException, InvalidNameException {
-        validate(toAdd);
+        validateItem(toAdd);
         checkExistsByUsername(toAdd.getUsername());
 
         toAdd.setPassword(passwordEncoder.encode(toAdd.getPassword()));
 
-        return userRepo.save(toAdd);
-    }
-
-    public List<User> getAllUsers() throws NoItemsException {
-        List<User> allUsers = userRepo.findAll();
-
-        if (allUsers.isEmpty()) {
-            throw new NoItemsException("No Items");
-        }
-
-        return allUsers;
+        return repo.save(toAdd);
     }
 
     public User getUserByName(String username) throws InvalidEntityException, InvalidNameException {
@@ -53,7 +46,7 @@ public class UserService {
             throw new InvalidEntityException("Name is invalid");
         }
 
-        Optional<User> toGet = userRepo.findByUsername(username);
+        Optional<User> toGet = repo.findByUsername(username);
         if (toGet.isEmpty()) {
             throw new InvalidNameException("Name not found");
         }
@@ -62,44 +55,31 @@ public class UserService {
     }
 
     public User editUser(User toEdit, UUID authId) throws InvalidEntityException, InvalidIdException, AccessDeniedException {
-        validate(toEdit);
+        validateItem(toEdit);
         checkAuthorization(toEdit.getId(), authId);
-        checkExists(toEdit.getId());
+        checkItemExists(toEdit.getId());
 
         toEdit.setPassword(passwordEncoder.encode(toEdit.getPassword()));
 
-        return userRepo.save(toEdit);
-    }
-
-    public User getUserById(UUID id) throws InvalidIdException {
-        Optional<User> toGet = userRepo.findById(id);
-
-        if (toGet.isEmpty()) {
-            throw new InvalidIdException("Invalid Id");
-        }
-
-        return toGet.get();
+        return repo.save(toEdit);
     }
 
     public void deleteUserById(UUID writeId, UUID authId) throws InvalidIdException, AccessDeniedException {
         checkAuthorization(writeId, authId);
-        checkExists(writeId);
-        userRepo.deleteById(writeId);
+        checkItemExists(writeId);
+        repo.deleteById(writeId);
     }
 
     private void checkExistsByUsername(String username) throws InvalidNameException {
-        if (userRepo.existsByUsername(username)) throw new InvalidNameException("Name already exists");
-    }
-
-    private void checkExists(UUID id) throws InvalidIdException {
-        if (!userRepo.existsById(id)) throw new InvalidIdException("Invalid Id");
+        if (repo.existsByUsername(username)) throw new InvalidNameException("Name already exists");
     }
 
     private void checkAuthorization(UUID writeId, UUID authId) throws AccessDeniedException {
         if (!writeId.equals(authId)) throw new AccessDeniedException("Access Denied");
     }
 
-    private void validate(User toUpsert) throws InvalidEntityException {
+    @Override
+    void validateItem(User toUpsert) throws InvalidEntityException {
         if (toUpsert == null
                 || toUpsert.getUsername().trim().isEmpty()
                 || toUpsert.getUsername().trim().length() > 50

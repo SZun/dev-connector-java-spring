@@ -1,9 +1,6 @@
 package com.sgz.server.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,15 +11,20 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "posts")
-@AllArgsConstructor
-@NoArgsConstructor
-public class Post {
+public class Post extends BaseEntity {
 
-    @Id
-    @GeneratedValue(generator = "hibernate-uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
+    public Post() {
+    }
+
+    public Post(UUID id, User user, String text, String title, LocalDate postDate, List<Comment> comments, List<User> likes) {
+        super(id);
+        this.user = user;
+        this.text = text;
+        this.title = title;
+        this.postDate = postDate;
+        this.comments = comments;
+        this.likes = likes;
+    }
 
     @ManyToOne
     @JoinColumn(name = "user_id")
