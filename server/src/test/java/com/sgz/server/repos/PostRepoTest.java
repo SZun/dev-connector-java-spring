@@ -89,6 +89,25 @@ class PostRepoTest {
         assertTrue(fromRepo);
     }
 
+    @Test
+    void existsByIdAndUser_Id() {
+        given(toTest.existsByIdAndUser_Id(any(UUID.class), any(UUID.class))).willReturn(true);
+
+        ArgumentCaptor<UUID> captor1 = ArgumentCaptor.forClass(UUID.class);
+        ArgumentCaptor<UUID> captor2 = ArgumentCaptor.forClass(UUID.class);
+
+        boolean fromRepo = toTest.existsByIdAndUser_Id(id, id);
+
+        verify(toTest).existsByIdAndUser_Id(captor1.capture(), captor2.capture());
+
+        UUID expectedParam1 = captor1.getValue();
+        UUID expectedParam2 = captor2.getValue();
+
+        assertEquals(id, expectedParam1);
+        assertEquals(id, expectedParam2);
+        assertTrue(fromRepo);
+    }
+
 
     @Test
     void findByIdEmpty() {

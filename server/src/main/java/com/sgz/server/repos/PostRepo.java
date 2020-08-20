@@ -12,4 +12,6 @@ public interface PostRepo extends JpaRepository<Post, UUID> {
 
     List<Post> findAllByUser_Id(UUID id);
 
+    boolean existsByIdAndUser_Id(UUID id, UUID userId);
+
 }
