@@ -42,120 +42,120 @@ class CommentServiceTest {
     private final Comment expectedComment = new Comment(id, this.testUser, "test comment", LocalDate.of(2020, 8, 15));
 
     @Test
-    void createComment() throws InvalidEntityException {
+    void createItem() throws InvalidEntityException {
         when(commentRepo.save(any(Comment.class))).thenReturn(expectedComment);
 
-        Comment fromService = toTest.createComment(expectedComment);
+        Comment fromService = toTest.createItem(expectedComment);
 
         assertEquals(expectedComment, fromService);
     }
 
     @Test
-    void createCommentNullComment(){
-        assertThrows(InvalidEntityException.class, () -> toTest.createComment(null));
+    void createItemNullComment(){
+        assertThrows(InvalidEntityException.class, () -> toTest.createItem(null));
     }
 
     @Test
-    void createCommentNullUser(){
+    void createItemNullUser(){
         final Comment toCreate = new Comment(id, null, "test comment", LocalDate.of(2020, 8, 15));
-        assertThrows(InvalidEntityException.class, () -> toTest.createComment(toCreate));
+        assertThrows(InvalidEntityException.class, () -> toTest.createItem(toCreate));
     }
 
     @Test
-    void createCommentNullDate(){
+    void createItemNullDate(){
         final Comment toCreate = new Comment(id, this.testUser, "test comment", null);
-        assertThrows(InvalidEntityException.class, () -> toTest.createComment(toCreate));
+        assertThrows(InvalidEntityException.class, () -> toTest.createItem(toCreate));
     }
 
     @Test
-    void createCommentNullText(){
+    void createItemNullText(){
         final Comment toCreate = new Comment(id, this.testUser, null, LocalDate.of(2020, 8, 15));
-        assertThrows(InvalidEntityException.class, () -> toTest.createComment(toCreate));
+        assertThrows(InvalidEntityException.class, () -> toTest.createItem(toCreate));
     }
 
     @Test
-    void createCommentBlankText(){
+    void createItemBlankText(){
         final Comment toCreate = new Comment(id, this.testUser, "   ", LocalDate.of(2020, 8, 15));
-        assertThrows(InvalidEntityException.class, () -> toTest.createComment(toCreate));
+        assertThrows(InvalidEntityException.class, () -> toTest.createItem(toCreate));
     }
 
     @Test
-    void createCommentEmptyText(){
+    void createItemEmptyText(){
         final Comment toCreate = new Comment(id, this.testUser, "", LocalDate.of(2020, 8, 15));
-        assertThrows(InvalidEntityException.class, () -> toTest.createComment(toCreate));
+        assertThrows(InvalidEntityException.class, () -> toTest.createItem(toCreate));
     }
 
     @Test
-    void createCommentTooLongText(){
+    void createItemTooLongText(){
         final Comment toCreate = new Comment(id, this.testUser, testLongString, LocalDate.of(2020, 8, 15));
-        assertThrows(InvalidEntityException.class, () -> toTest.createComment(toCreate));
+        assertThrows(InvalidEntityException.class, () -> toTest.createItem(toCreate));
     }
 
     @Test
-    void updateComment() throws InvalidEntityException, InvalidIdException {
+    void editItem() throws InvalidEntityException, InvalidIdException {
         when(commentRepo.save(any(Comment.class))).thenReturn(expectedComment);
         when(commentRepo.existsById(any(UUID.class))).thenReturn(true);
 
-        Comment fromService = toTest.updateComment(expectedComment);
+        Comment fromService = toTest.editItem(expectedComment);
 
         assertEquals(expectedComment, fromService);
     }
 
     @Test
-    void updateCommentNullComment(){
-        assertThrows(InvalidEntityException.class, () -> toTest.updateComment(null));
+    void editItemNullComment(){
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(null));
     }
 
     @Test
-    void updateCommentNullUser(){
+    void editItemNullUser(){
         final Comment toEdit = new Comment(id, null, "test comment", LocalDate.of(2020, 8, 15));;
-        assertThrows(InvalidEntityException.class, () -> toTest.updateComment(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateCommentNullDate(){
+    void editItemNullDate(){
         final Comment toEdit = new Comment(id, this.testUser, "test comment", null);;
-        assertThrows(InvalidEntityException.class, () -> toTest.updateComment(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateCommentNullText(){
+    void editItemNullText(){
         final Comment toEdit = new Comment(id, this.testUser, null, LocalDate.of(2020, 8, 15));;
-        assertThrows(InvalidEntityException.class, () -> toTest.updateComment(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateCommentBlankText(){
+    void editItemBlankText(){
         final Comment toEdit = new Comment(id, this.testUser, "  ", LocalDate.of(2020, 8, 15));;
-        assertThrows(InvalidEntityException.class, () -> toTest.updateComment(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateCommentEmptyText(){
+    void editItemEmptyText(){
         final Comment toEdit = new Comment(id, this.testUser, "", LocalDate.of(2020, 8, 15));;
-        assertThrows(InvalidEntityException.class, () -> toTest.updateComment(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateCommentTooLongText(){
+    void editItemTooLongText(){
         final Comment toEdit = new Comment(id, this.testUser, testLongString, LocalDate.of(2020, 8, 15));;
-        assertThrows(InvalidEntityException.class, () -> toTest.updateComment(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateCommentInvalidId(){
-        assertThrows(InvalidIdException.class, () -> toTest.updateComment(expectedComment));
+    void editItemInvalidId(){
+        assertThrows(InvalidIdException.class, () -> toTest.editItem(expectedComment));
     }
 
     @Test
-    void deleteById() throws InvalidIdException {
+    void deleteItemById() throws InvalidIdException {
         when(commentRepo.existsById(any(UUID.class))).thenReturn(true);
 
-        toTest.deleteById(id);
+        toTest.deleteItemById(id);
     }
 
     @Test
-    void deleteByIdInvalidId() {
-        assertThrows(InvalidIdException.class, () -> toTest.deleteById(id));
+    void deleteItemByIdInvalidId() {
+        assertThrows(InvalidIdException.class, () -> toTest.deleteItemById(id));
     }
 }

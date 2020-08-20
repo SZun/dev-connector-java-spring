@@ -108,46 +108,46 @@ class RoleServiceTest {
     }
 
     @Test
-    void createItem() throws InvalidEntityException, InvalidAuthorityException {
+    void createRole() throws InvalidEntityException, InvalidAuthorityException {
         final Role toCreate = new Role("USER");
 
         when(roleRepo.save(any())).thenReturn(testRole);
 
-        Role fromService = toTest.createItem(toCreate);
+        Role fromService = toTest.createRole(toCreate);
 
         assertEquals(testRole, fromService);
     }
 
     @Test
-    void createItemNullRole() {
-        assertThrows(InvalidEntityException.class, () -> toTest.createItem(null));
+    void createRoleNullRole() {
+        assertThrows(InvalidEntityException.class, () -> toTest.createRole(null));
     }
 
     @Test
-    void createItemEmptyAuthority() {
+    void createRoleEmptyAuthority() {
         final Role toCreate = new Role("");
-        assertThrows(InvalidEntityException.class, () -> toTest.createItem(toCreate));
+        assertThrows(InvalidEntityException.class, () -> toTest.createRole(toCreate));
     }
 
     @Test
-    void createItemBlankAuthority() {
+    void createRoleBlankAuthority() {
         final Role toCreate = new Role("  ");
-        assertThrows(InvalidEntityException.class, () -> toTest.createItem(toCreate));
+        assertThrows(InvalidEntityException.class, () -> toTest.createRole(toCreate));
     }
 
     @Test
-    void createItemTooLongAuthority() {
+    void createRoleTooLongAuthority() {
         final Role toCreate = new Role(testLongString);
-        assertThrows(InvalidEntityException.class, () -> toTest.createItem(toCreate));
+        assertThrows(InvalidEntityException.class, () -> toTest.createRole(toCreate));
     }
 
     @Test
-    void createItemInvalidAuthority() throws InvalidEntityException {
+    void createRoleInvalidAuthority() throws InvalidEntityException {
         final Role toCreate = new Role("USER");
 
         when(roleRepo.existsByAuthority(anyString())).thenReturn(true);
 
-        assertThrows(InvalidAuthorityException.class, () -> toTest.createItem(toCreate));
+        assertThrows(InvalidAuthorityException.class, () -> toTest.createRole(toCreate));
     }
 
     @Test

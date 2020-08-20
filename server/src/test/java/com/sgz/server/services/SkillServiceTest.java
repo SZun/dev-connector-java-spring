@@ -38,13 +38,13 @@ class SkillServiceTest {
     private final Skill expectedSkill = new Skill(id, "Java 11");
 
     @Test
-    void getAllSkills() throws NoItemsException {
+    void getAllItems() throws NoItemsException {
         final Skill expectedSkill2 = new Skill(id, "Java 8");
         final Skill expectedSkill3 = new Skill(id, "The Spring Framework");
 
         when(skillRepo.findAll()).thenReturn(Arrays.asList(expectedSkill,expectedSkill2, expectedSkill3));
 
-        List<Skill> fromService = toTest.getAllSkills();
+        List<Skill> fromService = toTest.getAllItems();
 
         assertEquals(3, fromService.size());
         assertTrue(fromService.contains(expectedSkill));
@@ -53,22 +53,22 @@ class SkillServiceTest {
     }
 
     @Test
-    void getAllSkillsNoItems() {
-        assertThrows(NoItemsException.class, () -> toTest.getAllSkills());
+    void getAllItemsNoItems() {
+        assertThrows(NoItemsException.class, () -> toTest.getAllItems());
     }
 
     @Test
-    void getSkillById() throws InvalidIdException {
+    void getItemById() throws InvalidIdException {
         when(skillRepo.findById(any(UUID.class))).thenReturn(Optional.of(expectedSkill));
 
-        Skill fromService = toTest.getSkillById(id);
+        Skill fromService = toTest.getItemById(id);
 
         assertEquals(expectedSkill, fromService);
     }
 
     @Test
-    void getSkillByIdInvalidId() {
-        assertThrows(InvalidIdException.class, () -> toTest.getSkillById(id));
+    void getItemByIdInvalidId() {
+        assertThrows(InvalidIdException.class, () -> toTest.getItemById(id));
     }
 
     @Test
@@ -147,53 +147,53 @@ class SkillServiceTest {
     }
 
     @Test
-    void updateSkill() throws InvalidEntityException, InvalidIdException {
+    void editItem() throws InvalidEntityException, InvalidIdException {
         when(skillRepo.save(any(Skill.class))).thenReturn(expectedSkill);
         when(skillRepo.existsById(any(UUID.class))).thenReturn(true);
 
-        Skill fromService = toTest.updateSkill(expectedSkill);
+        Skill fromService = toTest.editItem(expectedSkill);
 
         assertEquals(expectedSkill, fromService);
     }
 
     @Test
-    void updateSkillNullSkill() {
-        assertThrows(InvalidEntityException.class, () -> toTest.updateSkill(null));
+    void editItemNullSkill() {
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(null));
     }
 
     @Test
-    void updateSkillBlankName() {
+    void editItemBlankName() {
         final Skill toEdit = new Skill(id, "  ");
-        assertThrows(InvalidEntityException.class, () -> toTest.updateSkill(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateSkillEmptyName() {
+    void editItemEmptyName() {
         final Skill toEdit = new Skill(id, "");
-        assertThrows(InvalidEntityException.class, () -> toTest.updateSkill(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateSkillTooLongName() {
+    void editItemTooLongName() {
         final Skill toEdit = new Skill(id, testLongString);
-        assertThrows(InvalidEntityException.class, () -> toTest.updateSkill(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateSkillInvalidId() {
+    void editItemInvalidId() {
         final Skill toEdit = new Skill(id, "Java 11");
-        assertThrows(InvalidIdException.class, () -> toTest.updateSkill(toEdit));
+        assertThrows(InvalidIdException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void deleteById() throws InvalidIdException {
+    void deleteItemById() throws InvalidIdException {
         when(skillRepo.existsById(any(UUID.class))).thenReturn(true);
 
-        toTest.deleteById(id);
+        toTest.deleteItemById(id);
     }
 
     @Test
-    void deleteByIdInvalidId() {
-        assertThrows(InvalidIdException.class, () -> toTest.deleteById(id));
+    void deleteItemByIdInvalidId() {
+        assertThrows(InvalidIdException.class, () -> toTest.deleteItemById(id));
     }
 }

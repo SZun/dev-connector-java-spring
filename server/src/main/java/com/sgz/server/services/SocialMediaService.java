@@ -1,6 +1,7 @@
 package com.sgz.server.services;
 
 import com.sgz.server.entities.SocialMedia;
+import com.sgz.server.exceptions.InvalidAuthorityException;
 import com.sgz.server.exceptions.InvalidEntityException;
 import com.sgz.server.exceptions.InvalidIdException;
 import com.sgz.server.exceptions.InvalidLinkException;
@@ -12,19 +13,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class SocialMediaService {
-
-    private final SocialMediaRepo socialMediaRepo;
+public class SocialMediaService extends BaseService<SocialMedia, SocialMediaRepo> {
 
     private final String linkRegex = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
     @Autowired
     public SocialMediaService(SocialMediaRepo socialMediaRepo) {
-        this.socialMediaRepo = socialMediaRepo;
+        super(socialMediaRepo);
     }
 
     public SocialMedia getSocialMediaById(UUID id) throws InvalidIdException {
-        Optional<SocialMedia> toGet = socialMediaRepo.findById(id);
+        Optional<SocialMedia> toGet = repo.findById(id);
 
         if(toGet.isEmpty()) {
             throw new InvalidIdException("Invalid Id");
@@ -40,7 +39,7 @@ public class SocialMediaService {
             throw new InvalidEntityException("Invalid Entity");
         }
 
-        Optional<SocialMedia> toGet = socialMediaRepo.findByLink(link);
+        Optional<SocialMedia> toGet = repo.findByLink(link);
 
         if(toGet.isEmpty()) {
             throw new InvalidLinkException("Invalid Link");
@@ -50,26 +49,13 @@ public class SocialMediaService {
     }
 
     public SocialMedia createSocialMedia(SocialMedia toCreate) throws InvalidEntityException, InvalidLinkException {
-        validateSocialMedia(toCreate);
+        validateItem(toCreate);
         checkExistsByLink(toCreate.getLink());
 
-        return socialMediaRepo.save(toCreate);
+        return repo.save(toCreate);
     }
 
-    public SocialMedia updateSocialMedia(SocialMedia toUpdate) throws InvalidEntityException, InvalidIdException {
-        validateSocialMedia(toUpdate);
-        checkExistsById(toUpdate.getId());
-
-        return socialMediaRepo.save(toUpdate);
-    }
-
-    public void deleteSocialMediaById(UUID id) throws InvalidIdException {
-        checkExistsById(id);
-
-        socialMediaRepo.deleteById(id);
-    }
-
-    private void validateSocialMedia(SocialMedia toUpsert) throws InvalidEntityException {
+    void validateItem(SocialMedia toUpsert) throws InvalidEntityException {
         if(toUpsert == null || toUpsert.getLink() == null
                 || toUpsert.getLink().trim().length() == 0
                 || toUpsert.getLink().trim().length() > 255
@@ -79,14 +65,9 @@ public class SocialMediaService {
     }
 
     private void checkExistsByLink(String link) throws InvalidLinkException {
-        if(socialMediaRepo.existsByLink(link)){
+        if(repo.existsByLink(link)){
             throw new InvalidLinkException("Invalid Link");
         }
     }
 
-    private void checkExistsById(UUID id) throws InvalidIdException {
-        if(!socialMediaRepo.existsById(id)){
-            throw new InvalidIdException("Invalid id");
-        }
-    }
 }

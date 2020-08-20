@@ -17,8 +17,7 @@ public class RoleService extends BaseService<Role, RoleRepo> {
         super(repo);
     }
 
-    @Override
-    public Role createItem(Role toAdd) throws InvalidEntityException, InvalidAuthorityException {
+    public Role createRole(Role toAdd) throws InvalidEntityException, InvalidAuthorityException {
         validateItem(toAdd);
         checkExistsByAuthority(toAdd.getAuthority());
 

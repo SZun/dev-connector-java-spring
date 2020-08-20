@@ -38,7 +38,7 @@ public class RoleController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Role> createRole(@Valid @RequestBody Role toAdd) throws InvalidEntityException, InvalidAuthorityException {
-        return new ResponseEntity(roleService.createItem(toAdd), HttpStatus.CREATED);
+        return new ResponseEntity(roleService.createRole(toAdd), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

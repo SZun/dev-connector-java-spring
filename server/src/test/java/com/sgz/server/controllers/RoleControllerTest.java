@@ -153,8 +153,8 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void createItem() throws Exception {
-        when(roleService.createItem(any(Role.class))).thenReturn(expectedRole);
+    void createRole() throws Exception {
+        when(roleService.createRole(any(Role.class))).thenReturn(expectedRole);
 
         MvcResult mvcResult = mockMvc.perform(
                 post(baseURL)
@@ -169,10 +169,10 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void createItemBindingResultException() throws Exception {
+    void createRoleBindingResultException() throws Exception {
         final String expected = "{\"message\":\"Fields are invalid\",\"name\":\"InvalidRequestBodyException\"";
 
-        when(roleService.createItem(any(Role.class))).thenReturn(expectedRole);
+        when(roleService.createRole(any(Role.class))).thenReturn(expectedRole);
 
         MvcResult mvcResult = mockMvc.perform(
                 post(baseURL)
@@ -188,12 +188,12 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void createItemInvalidEntity() throws Exception {
+    void createRoleInvalidEntity() throws Exception {
         final String expectedMsg = "\"message\":\"Fields entered are invalid\",";
         final String expectedName = "\"name\":\"InvalidEntityException\",";
         final String expectedErrors = "\"errors\":null,\"timestamp\"";
 
-        when(roleService.createItem(any(Role.class))).thenThrow(new InvalidEntityException("Invalid Entity"));
+        when(roleService.createRole(any(Role.class))).thenThrow(new InvalidEntityException("Invalid Entity"));
 
         MvcResult mvcResult = mockMvc.perform(
                 post(baseURL)
@@ -210,12 +210,12 @@ class RoleControllerTest {
 
     @Test
     @WithMockUser(value = "Sam", roles = {"ADMIN"})
-    void createItemInvalidAuthority() throws Exception {
+    void createRoleInvalidAuthority() throws Exception {
         final String expectedMsg = "\"message\":\"Authority entered is invalid\",";
         final String expectedName = "\"name\":\"InvalidAuthorityException\",";
         final String expectedErrors = "\"errors\":null,\"timestamp\"";
 
-        when(roleService.createItem(any(Role.class))).thenThrow(new InvalidAuthorityException("Invalid Authority"));
+        when(roleService.createRole(any(Role.class))).thenThrow(new InvalidAuthorityException("Invalid Authority"));
 
         MvcResult mvcResult = mockMvc.perform(
                 post(baseURL)
@@ -231,7 +231,7 @@ class RoleControllerTest {
     }
 
     @Test
-    void createItemForbidden() throws Exception {
+    void createRoleForbidden() throws Exception {
         mockMvc.perform(
                 post(baseURL)
                         .content(objectMapper.writeValueAsString(testRole))

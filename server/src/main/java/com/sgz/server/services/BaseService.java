@@ -2,7 +2,6 @@ package com.sgz.server.services;
 
 
 import com.sgz.server.entities.BaseEntity;
-import com.sgz.server.exceptions.InvalidAuthorityException;
 import com.sgz.server.exceptions.InvalidEntityException;
 import com.sgz.server.exceptions.InvalidIdException;
 import com.sgz.server.exceptions.NoItemsException;
@@ -36,7 +35,10 @@ public abstract class BaseService<T extends BaseEntity, E extends JpaRepository<
         return toGet.get();
     }
 
-    public abstract T createItem(T toAdd) throws InvalidEntityException, InvalidAuthorityException;
+    public T createItem(T toAdd) throws InvalidEntityException {
+        validateItem(toAdd);
+        return repo.save(toAdd);
+    }
 
     public T editItem(T toEdit) throws InvalidEntityException, InvalidIdException {
         validateItem(toEdit);

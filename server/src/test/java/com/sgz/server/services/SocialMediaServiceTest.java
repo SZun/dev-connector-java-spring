@@ -139,64 +139,64 @@ class SocialMediaServiceTest {
     }
 
     @Test
-    void updateSocialMedia() throws InvalidEntityException, InvalidIdException {
+    void editItem() throws InvalidEntityException, InvalidIdException {
         when(socialMediaRepo.save(any(SocialMedia.class))).thenReturn(expectedSocialMedia);
         when(socialMediaRepo.existsById(any(UUID.class))).thenReturn(true);
 
-        SocialMedia fromService = toTest.updateSocialMedia(expectedSocialMedia);
+        SocialMedia fromService = toTest.editItem(expectedSocialMedia);
 
         assertEquals(expectedSocialMedia, fromService);
     }
 
     @Test
-    void updateSocialMediaNullSocialMedia() {
-        assertThrows(InvalidEntityException.class, () -> toTest.updateSocialMedia(null));
+    void editItemNullSocialMedia() {
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(null));
     }
 
     @Test
-    void updateSocialMediaNullLink() {
+    void editItemNullLink() {
         final SocialMedia toEdit = new SocialMedia(id, null);
-        assertThrows(InvalidEntityException.class, () -> toTest.updateSocialMedia(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateSocialMediaBlankLink() {
+    void editItemBlankLink() {
         final SocialMedia toEdit = new SocialMedia(id, "  ");
-        assertThrows(InvalidEntityException.class, () -> toTest.updateSocialMedia(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateSocialMediaEmptyLink() {
+    void editItemEmptyLink() {
         final SocialMedia toEdit = new SocialMedia(id, "");
-        assertThrows(InvalidEntityException.class, () -> toTest.updateSocialMedia(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateSocialMediaTooLongLink() {
+    void editItemTooLongLink() {
         final SocialMedia toEdit = new SocialMedia(id, testLongString);
-        assertThrows(InvalidEntityException.class, () -> toTest.updateSocialMedia(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateSocialMediaInvalidLinkPattern() {
+    void editItemInvalidLinkPattern() {
         final SocialMedia toEdit = new SocialMedia(id, "this is a link");
-        assertThrows(InvalidEntityException.class, () -> toTest.updateSocialMedia(toEdit));
+        assertThrows(InvalidEntityException.class, () -> toTest.editItem(toEdit));
     }
 
     @Test
-    void updateSocialMediaInvalidId() {
-        assertThrows(InvalidIdException.class, () -> toTest.updateSocialMedia(expectedSocialMedia));
+    void editItemInvalidId() {
+        assertThrows(InvalidIdException.class, () -> toTest.editItem(expectedSocialMedia));
     }
 
     @Test
-    void deleteSocialMediaById() throws InvalidIdException {
+    void deleteItemById() throws InvalidIdException {
         when(socialMediaRepo.existsById(any(UUID.class))).thenReturn(true);
 
-        toTest.deleteSocialMediaById(id);
+        toTest.deleteItemById(id);
     }
 
     @Test
-    void deleteSocialMediaByIdInvalidId() {
-        assertThrows(InvalidIdException.class, () -> toTest.deleteSocialMediaById(id));
+    void deleteItemByIdInvalidId() {
+        assertThrows(InvalidIdException.class, () -> toTest.deleteItemById(id));
     }
 }

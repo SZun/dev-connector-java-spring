@@ -25,11 +25,6 @@ public class UserService extends BaseService<User, UserRepo> {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
-    public User createItem(User toAdd) throws InvalidEntityException, InvalidAuthorityException {
-        throw new UnsupportedOperationException("Unsupported");
-    }
-
     public User createUser(User toAdd) throws InvalidEntityException, InvalidNameException {
         validateItem(toAdd);
         checkExistsByUsername(toAdd.getUsername());
