@@ -73,7 +73,6 @@ public class UserService extends BaseService<User, UserRepo> {
         if (!writeId.equals(authId)) throw new AccessDeniedException("Access Denied");
     }
 
-    @Override
     void validateItem(User toUpsert) throws InvalidEntityException {
         if (toUpsert == null
                 || toUpsert.getUsername().trim().isEmpty()

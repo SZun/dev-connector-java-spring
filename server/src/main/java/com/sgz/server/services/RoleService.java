@@ -38,7 +38,6 @@ public class RoleService extends BaseService<Role, RoleRepo> {
         return toGet.get();
     }
 
-    @Override
     void validateItem(Role toUpsert) throws InvalidEntityException {
         if (toUpsert == null
                 || toUpsert.getAuthority().trim().isEmpty()
